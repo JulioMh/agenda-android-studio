@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AgendaDB</string>
     <string name="agendadb">AgendaDB</string>
+    <string name="search">Search</string>
+    <string name="add">Añadir</string>
+    <string name="todo">TODO</string>
+    <string name="name">Name</string>
 </resources>

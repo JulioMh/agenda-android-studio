@@ -4,16 +4,16 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class PersonsDbHelper extends SQLiteOpenHelper {
+public class ContactsHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
 
-    private static final String DATABASE_CREATE = "CREATE TABLE Person(name TEXT, phone NUMBER)";
+    private static final String DATABASE_CREATE = "CREATE TABLE contacts(name TEXT, phone NUMBER)";
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS person";
+            "DROP TABLE IF EXISTS contacts";
 
-    public PersonsDbHelper(Context context, String name) {
+    ContactsHelper(Context context, String name) {
         super(context, name, null, DATABASE_VERSION);
     }
 

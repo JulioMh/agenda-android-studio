@@ -1,14 +1,11 @@
 package com.example.agendadb.entities;
 
 
-public class Person {
+public class Contacts {
     private String name;
     private int phoneNumber;
 
-    public Person(String name, int phoneNumber) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-    }
+    public Contacts() {}
 
     public String getName() {
         return name;
