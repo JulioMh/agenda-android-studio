@@ -2,6 +2,7 @@ package com.example.agendadb;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -27,19 +28,18 @@ public class MainActivity extends AppCompatActivity {
     private Agenda agenda;
 
     private void initList(){
-        SQLiteDatabase db = contactsHelper.getReadableDatabase();
 
         ArrayAdapter adapter =
                 new ArrayAdapter<String>(
                         this,
                         android.R.layout.simple_list_item_1,
-                        agenda.getContactsList(db));
+                        agenda.getContactsList());
         contacts.setAdapter(adapter);
     }
 
     private void setList(List<String> newContacts){
         ArrayAdapter adapter =
-                new ArrayAdapter<String>(
+                new ArrayAdapter<>(
                         this,
                         android.R.layout.simple_list_item_1,
                         newContacts);
@@ -52,41 +52,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initAgenda() {
+        SQLiteDatabase readable = contactsHelper.getReadableDatabase();
+        SQLiteDatabase writable = contactsHelper.getWritableDatabase();
+
+
         agenda = (Agenda) SingletonMap
                 .getInstance()
                 .get(MainActivity.SHARED_DATA_KEY);
 
         if (agenda == null) {
-            agenda = new Agenda();
+            agenda = new Agenda(readable, writable);
             SingletonMap.getInstance().put(SHARED_DATA_KEY, agenda);
         }
     }
 
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.add: addClicked(); break;
+            case R.id.add: addNewContact(); break;
             case R.id.search: searchClicked(); break;
         }
     }
 
+    private void addNewContact(){
+        Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
+        startActivity(intent);
+        initList();
+    }
+
     private void searchClicked() {
         String writtenName = name.getText().toString().trim();
-        SQLiteDatabase db = contactsHelper.getReadableDatabase();
-
-        setList(agenda.findByName(db, writtenName));
-
+        setList(agenda.findByName(writtenName));
         hideSoftKeyboard(name);
     }
 
-    private void addClicked() {
-        String writtenName = name.getText().toString().trim();
-        SQLiteDatabase db = contactsHelper.getWritableDatabase();
-
-        agenda.add(db, writtenName);
-
-        initList();
-        hideSoftKeyboard(name);
-    }
     private void hideSoftKeyboard(View v) {
         InputMethodManager inputMethodManager;
         inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -100,13 +98,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-
         name = findViewById(R.id.name);
         contacts = findViewById(R.id.listContacts);
 
         initContactsHelper();
         initAgenda();
         initList();
-
     }
 }

@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">AgendaDB</string>
-    <string name="agendadb">AgendaDB</string>
-    <string name="search">Search</string>
-    <string name="add">Añadir</string>
+    <string name="app_name" translatable="false">AgendaDB</string>
+    <string name="agendadb" translatable="false">AgendaDB</string>
+    <string name="search" translatable="false">Search</string>
     <string name="todo">TODO</string>
-    <string name="name">Name</string>
+    <string name="name" translatable="false">Nombre</string>
+    <string name="go_back" translatable="false">Volver</string>
+    <string name="todo">TODO</string>
+    <string name="add" translatable="false">Añadir</string>
 </resources>

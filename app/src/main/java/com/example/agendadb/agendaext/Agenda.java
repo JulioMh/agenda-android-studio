@@ -7,9 +7,11 @@ import android.util.Pair;
 
 import com.example.agendadb.entities.Contacts;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class Agenda  {
 
@@ -19,15 +21,19 @@ public class Agenda  {
             "name",
             "phone"
     };
+    private SQLiteDatabase readableDd;
+    private SQLiteDatabase writableDb;
 
-    public Agenda(){
+    public Agenda(SQLiteDatabase readable, SQLiteDatabase writable){
+        readableDd = readable;
+        writableDb = writable;
     }
 
-    public List<String> getContactsList(SQLiteDatabase db){
+    public List<String> getContactsList(){
         Contacts contact = null;
         contacts = new ArrayList<>();
 
-        Cursor cursor = db.query("contacts", columns, null, null, null, null, null);
+        Cursor cursor = readableDd.query("contacts", columns, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
             contact = new Contacts();
@@ -42,24 +48,21 @@ public class Agenda  {
         return contactsInfo;
     }
 
-    public void add(SQLiteDatabase db, String name){
+    public void add(String name, int phone){
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
-        db.insert("contacts", null, contentValues);
+        contentValues.put("phone", phone);
+        writableDb.insert("contacts", null, contentValues);
     }
 
-    public void modify(SQLiteDatabase db, String name, int phone){
-        
-    }
-
-    public List<String> findByName(SQLiteDatabase db, String name){
+    public List<String> findByName(String name){
         Contacts contact = null;
         contacts = new ArrayList<>();
 
         String where = "name LIKE ?";
         String[] whereArgs = { name + "%" };
         String sortOrder = "name ASC";
-        Cursor cursor = db.query("contacts", columns, where, whereArgs, null, null, sortOrder);
+        Cursor cursor = readableDd.query("contacts", columns, where, whereArgs, null, null, sortOrder);
         while (cursor.moveToNext()) {
             contact = new Contacts();
             contact.setName(cursor.getString(0));
@@ -77,7 +80,7 @@ public class Agenda  {
         for(int i = 0; i<contacts.size(); i++){
             contactsInfo.add(
                     "Name: " + contacts.get(i).getName()
-                            +"\n Phone: " +
+                            +"\nPhone: " +
                             (contacts.get(i).getPhoneNumber()== 0 ? "Not found" : contacts.get(i).getPhoneNumber()));
         }
     }
