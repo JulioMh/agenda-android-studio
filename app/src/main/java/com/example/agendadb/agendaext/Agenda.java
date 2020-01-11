@@ -48,11 +48,27 @@ public class Agenda  {
         return contactsInfo;
     }
 
-    public void add(String name, int phone){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("phone", phone);
-        writableDb.insert("contacts", null, contentValues);
+
+    public long add(String name, int phone){
+        long l = 2;
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("phone", phone);
+        String where = "name = ?";
+        String[] whereArgs = { name };
+        writableDb.beginTransaction();
+        try {
+            long cnt = writableDb.update("contacts", values, where, whereArgs);
+            l = 1;
+            if (cnt == 0) {
+                writableDb.insert("contacts", null, values);
+                l = 0;
+            }
+            writableDb.setTransactionSuccessful();
+        } finally {
+            writableDb.endTransaction();
+        }
+        return l;
     }
 
     public List<String> findByName(String name){
@@ -80,8 +96,7 @@ public class Agenda  {
         for(int i = 0; i<contacts.size(); i++){
             contactsInfo.add(
                     "Name: " + contacts.get(i).getName()
-                            +"\nPhone: " +
-                            (contacts.get(i).getPhoneNumber()== 0 ? "Not found" : contacts.get(i).getPhoneNumber()));
+                            +"\nPhone: " + contacts.get(i).getPhoneNumber());
         }
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AgendaDB</string>
+    <string name="todo">TODO</string>
+    <string name="search">Buscar</string>
+    <string name="name">Nombre</string>
+    <string name="go_back">Volver</string>
+    <string name="agendadb">AgendaDB</string>
+    <string name="add">Añadir</string>
+</resources>

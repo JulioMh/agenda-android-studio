@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -44,7 +46,14 @@ public class MainActivity extends AppCompatActivity {
                         android.R.layout.simple_list_item_1,
                         newContacts);
         contacts.setAdapter(adapter);
-
+        contacts.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        contacts.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initContactsHelper(){
@@ -74,9 +83,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addNewContact(){
-        Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
+        Intent intent = new Intent(this, AddContactActivity.class);
         startActivity(intent);
-        initList();
     }
 
     private void searchClicked() {

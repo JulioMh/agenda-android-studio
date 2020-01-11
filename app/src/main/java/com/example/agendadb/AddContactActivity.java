@@ -2,12 +2,15 @@ package com.example.agendadb;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.agendadb.agendaext.Agenda;
 import com.example.agendadb.agendaext.SingletonMap;
@@ -33,17 +36,39 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
     private void backToMain(){
-        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 
     private void addClicked() {
         String writtenName = name.getText().toString().trim();
-        int writtenPhone = Integer.parseInt(phone.getText().toString());
+        String writtenPhone = phone.getText().toString();
+        if(writtenName.equals("") ||writtenPhone.equals("")){
+            errorDialog();
+        }else{
+            long res = agenda.add(writtenName, Integer.parseInt(writtenPhone));
+            if(res==0){
+                Toast.makeText(this, "Contact Successfully Created", Toast.LENGTH_SHORT).show();
+                hideSoftKeyboard(name);
+                backToMain();
+            }else if(res==2){
+                errorDialog();
+            }else if(res==1){
+                Toast.makeText(this, "Contact Updated", Toast.LENGTH_SHORT).show();
+                hideSoftKeyboard(name);
+                backToMain();
+            }
 
-        agenda.add(writtenName, writtenPhone);
-        hideSoftKeyboard(name);
-        backToMain();
+        }
+    }
+
+    private void errorDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Error")
+                .setMessage("Data Error")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void hideSoftKeyboard(View v) {
