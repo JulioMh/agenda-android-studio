@@ -95,7 +95,7 @@ public class Agenda  {
         contactsInfo = new ArrayList<>();
         for(int i = 0; i<contacts.size(); i++){
             contactsInfo.add(
-                    "Name: " + contacts.get(i).getName()
+                    "Name: "+contacts.get(i).getName()
                             +"\nPhone: " + contacts.get(i).getPhoneNumber());
         }
     }

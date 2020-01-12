@@ -7,4 +7,12 @@
     <string name="go_back">Volver</string>
     <string name="agendadb">AgendaDB</string>
     <string name="add">Añadir</string>
+    <string name="added">Contacto correctamente creado</string>
+    <string name="updated">Contacto actualizado</string>
+    <string name="errorTitle">Error</string>
+    <string name="errorBody">Error en los datos</string>
+    <string name="phone">Teléfono</string>
+    <string name="enterName">Introduzca un nombre</string>
+    <string name="enterPhone">"Introduzca un número "</string>
+    <string name="notFound">No encontrado</string>
 </resources>

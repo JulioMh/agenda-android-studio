@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.agendadb.agendaext.Agenda;
 import com.example.agendadb.agendaext.SingletonMap;
@@ -46,14 +47,6 @@ public class MainActivity extends AppCompatActivity {
                         android.R.layout.simple_list_item_1,
                         newContacts);
         contacts.setAdapter(adapter);
-        contacts.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-        contacts.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void initContactsHelper(){
@@ -89,7 +82,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void searchClicked() {
         String writtenName = name.getText().toString().trim();
-        setList(agenda.findByName(writtenName));
+        List<String> contacts = agenda.findByName(writtenName);
+        if(contacts.size()==0){
+            Toast.makeText(this, R.string.notFound, Toast.LENGTH_SHORT).show();
+        }
+        setList(contacts);
         hideSoftKeyboard(name);
     }
 

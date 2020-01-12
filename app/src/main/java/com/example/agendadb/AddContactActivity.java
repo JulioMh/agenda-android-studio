@@ -3,7 +3,6 @@ package com.example.agendadb;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -49,13 +48,13 @@ public class AddContactActivity extends AppCompatActivity {
         }else{
             long res = agenda.add(writtenName, Integer.parseInt(writtenPhone));
             if(res==0){
-                Toast.makeText(this, "Contact Successfully Created", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.added, Toast.LENGTH_SHORT).show();
                 hideSoftKeyboard(name);
                 backToMain();
             }else if(res==2){
                 errorDialog();
             }else if(res==1){
-                Toast.makeText(this, "Contact Updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.updated, Toast.LENGTH_SHORT).show();
                 hideSoftKeyboard(name);
                 backToMain();
             }
@@ -65,8 +64,8 @@ public class AddContactActivity extends AppCompatActivity {
 
     private void errorDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Error")
-                .setMessage("Data Error")
+                .setTitle(R.string.errorTitle)
+                .setMessage(R.string.errorBody)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
